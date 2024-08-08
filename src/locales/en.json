@@ -1,0 +1,17 @@
+{
+  "title": "Calculate your potential gains",
+  "enterDetails": "Enter your details",
+  "initialContribution": "Initial contribution",
+  "timeframe": "Timeframe (y)",
+  "annualRate": "Annual rate (%)",
+  "contribution": "Contribution",
+  "period": "Period",
+  "monthly": "Monthly",
+  "quarterly": "Quarterly",
+  "yearly": "Yearly",
+  "calculateButton": "Calculate",
+  "yourResults": "Your results",
+  "initialDeposit": "Initial deposit",
+  "projectedReturns": "Projected returns",
+  "learnMore": "Learn more about this calculation"
+}
