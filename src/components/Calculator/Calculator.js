@@ -41,7 +41,6 @@ const Calculator = () => {
   };
 
   const calculateReturns = () => {
-    console.log("again");
     let n;
     if (period === "Monthly") {
       n = 12;
@@ -74,7 +73,7 @@ const Calculator = () => {
   };
 
   const respectiveCurrency = (value) => {
-    const { currency, locale } = languageCurrencyLocaleMap[language];
+    const { currency, locale } = languageCurrencyLocaleMap[language] || languageCurrencyLocaleMap['en'];
     return new Intl.NumberFormat(locale, {
       style: "currency",
       currency: currency,
@@ -87,7 +86,7 @@ const Calculator = () => {
   };
 
   const getCurrencySymbol = () => {
-    const { currency, locale } = languageCurrencyLocaleMap[language];
+    const { currency, locale } = languageCurrencyLocaleMap[language] || languageCurrencyLocaleMap['en'];
     return new Intl.NumberFormat(locale, {
       style: "currency",
       currency: currency,
@@ -127,6 +126,7 @@ const Calculator = () => {
                 placeholder="0"
                 min="0"
                 step="100"
+                aria-label="Initial Contribution"
               />
             </label>
             <label>
@@ -139,6 +139,7 @@ const Calculator = () => {
                 max="100"
                 min="0"
                 step="1"
+                aria-label="Time Frame"
               />
             </label>
             <label>
@@ -151,6 +152,7 @@ const Calculator = () => {
                 max="10"
                 min="0"
                 step="0.1"
+                aria-label="Annual Rate"
               />
             </label>
             <div className="contribution-container">
@@ -163,6 +165,7 @@ const Calculator = () => {
                   placeholder="0"
                   min="0"
                   step="50"
+                  aria-label="Contribution"
                 />
               </label>
               <label>
@@ -170,6 +173,7 @@ const Calculator = () => {
                 <select
                   value={period}
                   onChange={(e) => setPeriod(e.target.value)}
+                  aria-label="Period"
                 >
                   <option value="Monthly">{t("monthly")}</option>
                   <option value="Quarterly">{t("quarterly")}</option>
