@@ -68,6 +68,24 @@ The application is hosted on AWS and you can view it directly from the static we
 
 You don’t need to run the app locally to test it. Use the link above to access the deployed version of the app.
 
+## Running Tests
+
+To ensure the app works correctly and to validate that the component logic behaves as expected, follow these steps to run the tests:
+
+### Run the Tests
+
+Execute the following command to run the test suite:
+
+```
+npm test
+```
+
+This command will start Jest and run all the tests in the __tests__ directory and any files with .test.js.
+
+### View Test Results
+
+After running the tests, Jest will provide a summary of the test results in the terminal. This includes information about which tests passed and which tests failed.
+
 ## Formula for Calculation
 
 The future value of the investment is calculated using the following formula:
