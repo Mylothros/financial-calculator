@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import "./Calculator.scss";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
@@ -24,6 +24,10 @@ const Calculator = () => {
       locale: "fr-FR",
     },
   };
+
+  useEffect(() => {
+    document.documentElement.setAttribute("lang", language);
+  }, [language]);
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
