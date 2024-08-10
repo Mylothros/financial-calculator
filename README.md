@@ -4,7 +4,7 @@
 
 ## Overview
 
-This project is a responsive web component for a financial calculator built using ReactJS. The component allows users to estimate their potential gains based on various inputs and displays the results dynamically.
+This project is a responsive web component for a financial calculator built using ReactJS. The component allows users to estimate their potential gains based on various inputs and displays the results dynamically. Changes in language are applied without needing to refresh the page, ensuring a smoother experience.
 
 ## Features
 
