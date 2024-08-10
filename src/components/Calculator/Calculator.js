@@ -1,7 +1,7 @@
-import React, { useState, useEffect  } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import "./Calculator.scss";
 import { useTranslation } from "react-i18next";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 const Calculator = () => {
   const [initialContribution, setInitialContribution] = useState("");
@@ -12,6 +12,7 @@ const Calculator = () => {
   const [results, setResults] = useState({ deposit: 0, returns: 0 });
 
   const { t, i18n } = useTranslation();
+  const { lang } = useParams();
   const location = useLocation();
   const language = i18n.language;
   const languageCurrencyLocaleMap = {
@@ -26,29 +27,32 @@ const Calculator = () => {
   };
 
   useEffect(() => {
+    if (lang) {
+      i18n.changeLanguage(lang);
+    }
     document.documentElement.setAttribute("lang", language);
   }, [language]);
 
-  const changeLanguage = (lng) => {
+  const changeLanguage = (lng, translationsValues) => {
     i18n.changeLanguage(lng);
-    resetStates();
+    resetStates(translationsValues);
     //I will not use an API to convert currency between French and UK currencies, or for other conversions, I will reset all states whenever the language changes
   };
 
-  const resetStates = () => {
+  const resetStates = (translationsValues) => {
     setInitialContribution("");
     setTimeFrame("");
     setAnnualRate("");
     setContribution("");
-    setPeriod("Monthly");
+    setPeriod(translationsValues("monthly"));
     setResults({ deposit: 0, returns: 0 });
   };
 
-  const calculateReturns = () => {
+  const calculateReturns = (translationsValues) => {
     let n;
-    if (period === "Monthly") {
+    if (period === translationsValues("monthly")) {
       n = 12;
-    } else if (period === "Quarterly") {
+    } else if (period === translationsValues("quarterly")) {
       n = 4;
     } else {
       n = 1;
@@ -77,7 +81,8 @@ const Calculator = () => {
   };
 
   const respectiveCurrency = (value) => {
-    const { currency, locale } = languageCurrencyLocaleMap[language] || languageCurrencyLocaleMap['en'];
+    const { currency, locale } =
+      languageCurrencyLocaleMap[language] || languageCurrencyLocaleMap["en"];
     return new Intl.NumberFormat(locale, {
       style: "currency",
       currency: currency,
@@ -89,8 +94,9 @@ const Calculator = () => {
       .replace(",", ".");
   };
 
-  const getCurrencySymbol = () => {
-    const { currency, locale } = languageCurrencyLocaleMap[language] || languageCurrencyLocaleMap['en'];
+  const getCurrencySymbol = useMemo(() => {
+    const { currency, locale } =
+      languageCurrencyLocaleMap[language] || languageCurrencyLocaleMap["en"];
     return new Intl.NumberFormat(locale, {
       style: "currency",
       currency: currency,
@@ -98,7 +104,16 @@ const Calculator = () => {
     })
       .formatToParts(0)
       .find((part) => part.type === "currency").value;
-  };
+  }, [language]);
+
+  const formattedDeposit = useMemo(
+    () => respectiveCurrency(results.deposit),
+    [language, results]
+  );
+  const formattedReturns = useMemo(
+    () => respectiveCurrency(results.returns),
+    [language, results]
+  );
 
   return (
     <div className="container">
@@ -107,13 +122,13 @@ const Calculator = () => {
           <h1>{t("title")}</h1>{" "}
           <Link
             to={{ pathname: "/en", search: location.search }}
-            onClick={() => changeLanguage("en")}
+            onClick={() => changeLanguage("en", t)}
           >
             <img src="/images/england.png" alt="English" />
           </Link>
           <Link
             to={{ pathname: "/fr", search: location.search }}
-            onClick={() => changeLanguage("fr")}
+            onClick={() => changeLanguage("fr", t)}
           >
             <img src="/images/france.png" alt="Francais" />
           </Link>
@@ -122,7 +137,7 @@ const Calculator = () => {
           <div className="calculator-inputs">
             <h2>{t("enterDetails")}</h2>
             <label>
-              {t("initialContribution")} ({getCurrencySymbol()}){" "}
+              {t("initialContribution")} ({getCurrencySymbol}){" "}
               <input
                 type="number"
                 value={initialContribution}
@@ -161,7 +176,7 @@ const Calculator = () => {
             </label>
             <div className="contribution-container">
               <label>
-                {t("contribution")} ({getCurrencySymbol()}){" "}
+                {t("contribution")} ({getCurrencySymbol}){" "}
                 <input
                   type="number"
                   value={contribution}
@@ -179,13 +194,13 @@ const Calculator = () => {
                   onChange={(e) => setPeriod(e.target.value)}
                   aria-label="Period"
                 >
-                  <option value="Monthly">{t("monthly")}</option>
-                  <option value="Quarterly">{t("quarterly")}</option>
-                  <option value="Yearly">{t("yearly")}</option>
+                  <option value={t("monthly")}>{t("monthly")}</option>
+                  <option value={t("quarterly")}>{t("quarterly")}</option>
+                  <option value={t("yearly")}>{t("yearly")}</option>
                 </select>
               </label>
             </div>
-            <button onClick={calculateReturns}>{t("calculateButton")}</button>
+            <button onClick={() => calculateReturns(t)}>{t("calculateButton")}</button>
           </div>
           <div className="calculator-results">
             <h2>{t("yourResults")}</h2>
@@ -198,15 +213,11 @@ const Calculator = () => {
             <div className="results-container">
               <p className="initial-deposit">
                 {t("initialDeposit")}:{" "}
-                <span className="money">
-                  {respectiveCurrency(results.deposit)}
-                </span>
+                <span className="money">{formattedDeposit}</span>
               </p>
               <p className="projected-returns">
                 {t("projectedReturns")}:{" "}
-                <span className="money">
-                  {respectiveCurrency(results.returns)}
-                </span>
+                <span className="money">{formattedReturns}</span>
               </p>
             </div>
           </div>

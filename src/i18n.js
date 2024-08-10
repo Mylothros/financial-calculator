@@ -11,7 +11,6 @@ i18n
       en: { translation: en },
       fr: { translation: fr }
     },
-    lng: 'en',
     fallbackLng: 'en',
     interpolation: {
       escapeValue: true //for xss attacks

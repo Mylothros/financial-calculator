@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@playwright/test": "^1.46.0",
     "@testing-library/user-event": "^13.5.0",
     "financial-calculator": "file:",
     "i18next": "^23.12.2",
