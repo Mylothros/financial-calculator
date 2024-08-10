@@ -30,6 +30,9 @@ const Calculator = () => {
     if (lang) {
       i18n.changeLanguage(lang);
     }
+  }, []);
+
+  useEffect(() => {
     document.documentElement.setAttribute("lang", language);
   }, [language]);
 
@@ -49,6 +52,8 @@ const Calculator = () => {
   };
 
   const calculateReturns = (translationsValues) => {
+    if (!initialContribution || !timeFrame || !annualRate || !contribution)
+      return;
     let n;
     if (period === translationsValues("monthly")) {
       n = 12;
@@ -200,7 +205,9 @@ const Calculator = () => {
                 </select>
               </label>
             </div>
-            <button onClick={() => calculateReturns(t)}>{t("calculateButton")}</button>
+            <button onClick={() => calculateReturns(t)}>
+              {t("calculateButton")}
+            </button>
           </div>
           <div className="calculator-results">
             <h2>{t("yourResults")}</h2>
