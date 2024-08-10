@@ -90,7 +90,13 @@ After running the tests, Jest will provide a summary of the test results in the 
 
 The future value of the investment is calculated using the following formula:
 
-\[ A = P \left(1 + \frac{r}{n}\right)^{nt} + \frac{PMT \left[\left(1 + \frac{r}{n}\right)^{nt} - 1\right]}{\frac{r}{n}} \]
+$$
+A = P \left(1 + \frac{r}{n}\right)^{n \cdot t} + \frac{PMT \left[\left(1 + \frac{r}{n}\right)^{n \cdot t} - 1\right]}{\frac{r}{n}}
+$$
+$$
+R = A - (P + PMT \cdot N \cdot T)
+$$
+
 
 Where:
 - **P**: Principal (Initial Contribution)
